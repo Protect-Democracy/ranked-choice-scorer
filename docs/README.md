@@ -6,50 +6,28 @@
 
 ## Dependencies
 
-Describe any dependencies that must be installed for this software to work.
-This includes programming languages, databases or other storage mechanisms, build tools, frameworks, and so forth.
-If specific versions of other software are required, or known not to work, call that out.
+1. Python 3.9 or greater
+2. [Poetry](https://python-poetry.org) 1.1 or greater
+3. Google Sheets API access and credentials. See [Google Developer documentation](https://developers.google.com/workspace/guides/create-credentials#oauth-client-id) for details on setting up "Desktop App" access.
 
 ## Installation
 
-Detailed instructions on how to install, configure, and get the project running.
-This should be frequently tested to ensure reliability. Alternatively, link to
-a separate [INSTALL](INSTALL.md) document.
-
-## Configuration
-
-If the software is configurable, describe it in detail, either here or in other documentation to which you link.
+1. Clone the repository.
+2. From the base project directory, run `poetry install`
+3. Run `poetry shell`
+4. Run `python ranked_choice_scorer.py --help` for a list of options
 
 ## Usage
 
-Show users how to use the software.
-Be specific.
-Use appropriate formatting when showing code snippets.
+The command line tool has three options available:
 
-## How to test the software
-
-If the software includes automated tests, detail how to run those tests.
-
-## Known issues
-
-Document any known significant shortcomings with the software.
+1. `--googleid`: The Google Sheet ID of the spreadsheet you want to process
+2. `--questions`: The exact text string of the questions you want to process (supports multiple space-separated strings)
+3. `--chart`: A flag to include Sankey diagrams of the results
 
 ## Getting help
 
-Instruct users how to get help with this software; this might include links to an issue tracker, wiki, mailing list, etc.
-
-**Example**
-
 If you have questions, concerns, bug reports, etc, please file an issue in this repository's Issue Tracker.
-
-## Getting involved
-
-This section should detail why people should get involved and describe key areas you are
-currently focusing on; e.g., trying to get feedback on features, fixing certain bugs, building
-important pieces, etc.
-
-General instructions on _how_ to contribute should be stated with a link to [CONTRIBUTING](CONTRIBUTING.md).
-
 
 ----
 
