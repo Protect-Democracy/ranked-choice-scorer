@@ -2,7 +2,9 @@
 
 **Description**: A Python script that scores ranked choice results from Google Forms.
 
-**Screenshot**: If the software has visual components, place a screenshot after the description.
+**Screenshots**: 
+
+![Google Form Ranked Choice Example](ranked-choice-question-example.png)
 
 ## Dependencies
 
