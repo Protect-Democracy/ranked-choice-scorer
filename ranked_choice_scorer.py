@@ -242,6 +242,10 @@ def generate_sankey(df, cat_cols=[], value_cols="", title="Sankey Diagram"):
         label_list.index(x) for x in source_target_df["target"]
     ]
 
+    link_color_list = []
+    for item in source_target_df["target"]:
+        link_color_list.append(color_dict[item[:-1]].replace("0.8", "0.3"))
+
     # Remove the appended numbers from the label list
     label_list = [item[:-1] for item in label_list]
 
@@ -259,6 +263,7 @@ def generate_sankey(df, cat_cols=[], value_cols="", title="Sankey Diagram"):
             source=source_target_df["source_id"],
             target=source_target_df["target_id"],
             value=source_target_df["count"],
+            color=link_color_list,
         ),
     )
 
