@@ -95,7 +95,7 @@ def clean_data(df, questions):
     return result
 
 
-def vote_by_ranking(df):
+def vote_by_ranking(df, verbose=False):
     results = []
     vote_rounds = pd.DataFrame()
 
@@ -129,7 +129,8 @@ def vote_by_ranking(df):
         sum_votes = pd.DataFrame(potential_losers_df.sum())
         least_ranking = sum_votes[0].max()
         loser = sum_votes[sum_votes[0] == least_ranking].index.tolist()[0]
-        print(f"Loser of round {r} is {loser}")
+        if verbose:
+            print(f"Loser of round {r} is {loser}")
         losers.append(loser)
 
         # Determining who their votes go to
@@ -147,11 +148,13 @@ def vote_by_ranking(df):
             vote_goes_to = votes_to_distribute_t[
                 votes_to_distribute_t[votr] == nxt_choice
             ].index.tolist()[0]
-            print(f"Vote goes to {vote_goes_to}")
+            if verbose:
+                print(f"Vote goes to {vote_goes_to}")
 
             # Changing their votes
             vote_rounds.loc[votr, r] = vote_goes_to
-        print("\n")
+        if verbose:
+            print("\n")
 
     col_rounds = vote_rounds.columns.tolist()
     vote_rounds["value"] = [1 for x in range(vote_rounds.shape[0])]
@@ -168,7 +171,7 @@ def select_winner(vote_rounds):
     if len(winner) > 1:
         print("There is a draw")
     else:
-        print(f"And the final winner is… {winner[0]}!\n")
+        print(f"The final winner is… {winner[0]}!\n")
     print(final_count)
     print("\n")
 
@@ -212,10 +215,9 @@ def generate_sankey(df, cat_cols=[], value_cols="", title="Sankey Diagram"):
     for item in label_list:
         if item[:-1] not in color_dict.keys():
             color_dict[item[:-1]] = color_palette.pop(
-                random.randint(0, len(color_palette)-1)
+                random.randint(0, len(color_palette) - 1)
             )
         color_list.append(color_dict[item[:-1]])
-
 
     # transform df into a source-target pair
     for i in range(len(cat_cols) - 1):
@@ -300,13 +302,19 @@ if __name__ == "__main__":
         action="store_true",
         default=False,
     )
+    parser.add_argument(
+        "--verbose",
+        dest="verbose",
+        action="store_true",
+        default=False,
+    )
     args = parser.parse_args()
 
     df = get_spreadsheet(args.googleid)
     result = clean_data(df, args.questions)
 
     for key, value in result.items():
-        (vote_rounds, col_rounds) = vote_by_ranking(value)
+        (vote_rounds, col_rounds) = vote_by_ranking(value, verbose=args.verbose)
         select_winner(vote_rounds)
         df_sankey = get_sankey_dataframe(vote_rounds, col_rounds)
         if args.chart:
