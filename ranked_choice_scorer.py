@@ -74,9 +74,8 @@ def clean_data(df, questions):
     df = df[1:]
     # Set the header row as the df header
     df.columns = new_header
-    # Remove the time stamp and email
-    # TODO: Keep only columns with `questions` in names
-    df = df.iloc[:, 2:]
+    # Remove extraneous columns
+    df = df.loc[:, df.columns.str.contains("|".join(questions), regex=True)]
 
     # Convert votes to int
     for col in df.columns:
