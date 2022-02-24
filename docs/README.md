@@ -10,7 +10,8 @@
 
 1. Python 3.9 or greater
 2. [Poetry](https://python-poetry.org) 1.1 or greater
-3. Google Sheets API access and credentials. See [Google Developer documentation](https://developers.google.com/workspace/guides/create-credentials#oauth-client-id) for details on setting up "Desktop App" access.
+3. Google Form results spreadsheet with at least one Multiple Choice Grid question you want scored.
+4. Google Sheets API access and credentials. See [Google Developer documentation](https://developers.google.com/workspace/guides/create-credentials#oauth-client-id) for details on setting up "Desktop App" access.
 
 ## Installation
 
