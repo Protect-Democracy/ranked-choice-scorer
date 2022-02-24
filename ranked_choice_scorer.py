@@ -27,8 +27,8 @@ RANGE_NAME = "Form Responses 1"
 
 
 def get_spreadsheet(google_id):
-    """Shows basic usage of the Sheets API.
-    Prints values from a sample spreadsheet.
+    """
+    Gets the spreadsheet from a Google Sheet via the supplied google_id
     """
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -65,11 +65,13 @@ def get_spreadsheet(google_id):
 
 
 def clean_column_name(col):
+    """Standardizes column names based on Google Forms format"""
     match = re.search(r"(?<=\[).+?(?=\])", col)
     return match.group() if match else None
 
 
 def clean_data(df, questions):
+    """Cleans up Google Form data so it can be processed"""
     # Grab the first row for the header
     new_header = df.iloc[0]
     # Take the data less the header row
@@ -98,6 +100,7 @@ def clean_data(df, questions):
 
 
 def vote_by_ranking(df, verbose=False):
+    """Process the vote data into ranking data structures"""
     results = []
     vote_rounds = pd.DataFrame()
 
@@ -164,7 +167,7 @@ def vote_by_ranking(df, verbose=False):
 
 
 def select_winner(vote_rounds):
-    # Selecting winner
+    """Select and output the winner to text"""
     final_count = pd.DataFrame(vote_rounds.iloc[:, -2:-1].value_counts()).reset_index()
     final_count.columns = ["candidate", "final_votes"]
     winner = final_count[final_count.final_votes == final_count.final_votes.max()][
@@ -179,6 +182,7 @@ def select_winner(vote_rounds):
 
 
 def get_sankey_dataframe(vote_rounds, col_rounds):
+    """Generate a Plotly-compatible dataframe for a Sankey chart"""
     df_sankey = vote_rounds.groupby(col_rounds).count().reset_index()
     for col in col_rounds:
         df_sankey[col] = df_sankey[col] + str(col)
@@ -187,7 +191,8 @@ def get_sankey_dataframe(vote_rounds, col_rounds):
 
 def generate_sankey(df, cat_cols=[], value_cols="", title="Sankey Diagram"):
     """
-    https://gist.github.com/ken333135/09f8793fff5a6df28558b17e516f91ab
+    Configure the options for the Sankey chart
+    Adapted from https://gist.github.com/ken333135/09f8793fff5a6df28558b17e516f91ab
     """
     # Color palettes from https://www.schemecolor.com
     with open("color_palettes.json", "r") as fp:
@@ -266,6 +271,7 @@ def generate_sankey(df, cat_cols=[], value_cols="", title="Sankey Diagram"):
 
 
 def chart_votes(df_sankey, col_rounds, question):
+    """Generate and display the charts"""
     sankey_title = f"{question} – Vote by Ranking"
     sankey_fig = generate_sankey(
         df_sankey, cat_cols=col_rounds, value_cols="value", title=sankey_title
@@ -275,6 +281,7 @@ def chart_votes(df_sankey, col_rounds, question):
     fig.update_layout(width=int(1200))
     fig.add_annotation(x=0, y=1.05, showarrow=False, text="First round")
     fig.add_annotation(x=1, y=1.05, showarrow=False, text="Final round")
+    # TODO: Save charts to files?
     fig.show()
 
 
