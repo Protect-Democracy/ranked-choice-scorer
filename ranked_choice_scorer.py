@@ -21,6 +21,7 @@ from googleapiclient.errors import HttpError
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 # The ID and range of a sample spreadsheet.
+# TODO: Make this configurable
 RANGE_NAME = "Form Responses 1"
 
 
