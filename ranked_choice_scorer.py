@@ -1,4 +1,5 @@
 import argparse
+import json
 import logging
 import os.path
 import random
@@ -188,20 +189,9 @@ def generate_sankey(df, cat_cols=[], value_cols="", title="Sankey Diagram"):
     """
     https://gist.github.com/ken333135/09f8793fff5a6df28558b17e516f91ab
     """
-    color_palette = [
-        "rgba(255, 0, 0, 0.8)",
-        "rgba(255, 128, 0, 0.8)",
-        "rgba(255, 255, 0, 0.8)",
-        "rgba(128, 255, 0, 0.8)",
-        "rgba(0, 255, 0, 0.8)",
-        "rgba(0, 255, 128, 0.8)",
-        "rgba(0, 255, 255, 0.8)",
-        "rgba(0, 128, 255, 0.8)",
-        "rgba(0, 0, 255, 0.8)",
-        "rgba(128, 0, 255, 0.8)",
-        "rgba(255, 0, 255, 0.8)",
-        "rgba(255, 0, 128, 0.8)",
-    ]
+    # Color palettes from https://www.schemecolor.com
+    with open("color_palettes.json", "r") as fp:
+        color_palettes = json.load(fp)
     label_list = []
     for cat_col in cat_cols:
         label_list_temp = list(set(df[cat_col].values))
@@ -212,6 +202,7 @@ def generate_sankey(df, cat_cols=[], value_cols="", title="Sankey Diagram"):
 
     color_list = []
     color_dict = {}
+    color_palette = color_palettes[random.randint(0, len(color_palettes) - 1)]
 
     for item in label_list:
         if item[:-1] not in color_dict.keys():
