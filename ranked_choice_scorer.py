@@ -80,6 +80,8 @@ def clean_data(df, questions):
     df.columns = new_header
     # Remove extraneous columns
     df = df.loc[:, df.columns.str.contains("|".join(questions), regex=True)]
+    # Drop rows with missing data
+    df = df.dropna(how="all")
 
     # Convert votes to int
     for col in df.columns:
