@@ -25,7 +25,7 @@
 The command line tool has four parameters available:
 
 1. `--googleid`: The Google Sheet ID of the spreadsheet you want to process (required)
-2. `--questions`: The exact text string of the questions you want to process (required; supports multiple space-separated strings)
+2. `--questions`: The exact text string of the questions you want to process (required; currently a bug in processing multiple questions in one command)
 3. `--chart`: A flag to include Sankey diagrams of the results (optional)
 4. `--verbose`: A flag to include detailed output about vote allocation for each round
 
