@@ -18,6 +18,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+logging.getLogger().setLevel(logging.INFO)
+
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
@@ -80,6 +82,9 @@ def clean_data(df, questions):
     df.columns = new_header
     # Remove extraneous columns
     df = df.loc[:, df.columns.str.contains("|".join(questions), regex=True)]
+    # Set any rows that are blank to na
+    df = df.replace("", np.NaN)
+    df = df.replace("None", np.NaN)
     # Drop rows with missing data
     df = df.dropna(how="all")
 
